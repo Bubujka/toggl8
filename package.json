@@ -1,0 +1,31 @@
+{
+  "name": "toggl8",
+  "version": "1.0.0",
+  "description": "Normalize time entries in workspace to 8 hours.",
+  "main": "index.js",
+  "bin": {
+    "toggl8": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Bubujka/toggl8.git"
+  },
+  "keywords": [
+    "toggl",
+    "time-tracking"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aleksej Kamynin <zendzirou@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^0.9.0",
+    "chalk": "^1.0.0",
+    "envbang-node": "0.0.1",
+    "inquirer": "^0.8.2",
+    "moment": "^2.10.2",
+    "request": "^2.55.0",
+    "underscore": "^1.8.3"
+  }
+}
