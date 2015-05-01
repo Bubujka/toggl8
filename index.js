@@ -143,8 +143,20 @@ async.auto({
       cb(null, data);
     });
   }],
-
-  filtered_entries: ['entries', function(cb,state){
+  hours: ['entries', function(cb){
+    inquirer.prompt([ {
+      type: "Input",
+      message: "До скольки часов дополнить?",
+      name: "value",
+      default: 8
+    }], function(answers){
+      if(!answers.value){
+        return cb('abort');
+      }
+      cb(null, parseInt(answers.value));
+    });
+  }],
+  filtered_entries: ['hours', 'entries', function(cb,state){
     var filtered_entries = _.filter(state.entries, function(itm){
       return itm.wid === state.wid;
     });
@@ -156,13 +168,13 @@ async.auto({
     if(filtered_entries.length === 0){
       return cb('nothing');
     }
-    console.log("Будет дополнительно добавлено: " + chalk.green(h(3600*8 - sum)));
+    console.log("Будет дополнительно добавлено: " + chalk.green(h(3600 * state.hours - sum)));
     hr();
     for(var i in filtered_entries){
       var t = filtered_entries[i];
       console.log(' - '+t.description +' '+
                   chalk.green(h(t.duration)) + ' → ' +
-                  chalk.green(h( t.duration / sum * 3600 * 8)));
+                  chalk.green(h( t.duration / sum * 3600 * state.hours)));
     }
 
     hr();
@@ -174,11 +186,11 @@ async.auto({
     cb(null, sum);
   }],
 
-  confirm: ['sum', function(cb){
+  confirm: ['sum', function(cb, state){
     inquirer.prompt([{
       type: "confirm",
       name: "recalculate",
-      message: "Привести все данные к 8-часовому рабочему дню",
+      message: "Привести все данные к "+state.hours+"-часовому рабочему дню",
       default: false
     }], function(answers){
       if(!answers.recalculate){
@@ -197,7 +209,8 @@ async.auto({
         var nentry = _.clone(entry);
         nentry.start = null;
         nentry.stop = null;
-        nentry.duration = Math.floor(entry.duration / state.sum * 3600 * 8);
+        nentry.duration = Math.floor(entry.duration / state.sum * 3600 * state.hours);
+        nentry.duration_only = true;
         request
           .put('https://www.toggl.com/api/v8/time_entries/'+entry.id,
                 { json: { time_entry: nentry } },
