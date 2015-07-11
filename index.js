@@ -72,7 +72,7 @@ async.auto({
     var days = [];
     var t = moment();
     var suffix = '';
-    for (var i = 0; i < 7; i ++) {
+    for (var i = 0; i < 21; i ++) {
       if(i === 0){
         suffix = ' (сегодня)';
       }else if(i === 1){
@@ -191,7 +191,7 @@ async.auto({
       type: "confirm",
       name: "recalculate",
       message: "Привести все данные к "+state.hours+"-часовому рабочему дню",
-      default: false
+      default: true
     }], function(answers){
       if(!answers.recalculate){
         cb('abort');
