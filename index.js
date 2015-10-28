@@ -72,7 +72,7 @@ async.auto({
     var days = [];
     var t = moment();
     var suffix = '';
-    for (var i = 0; i < 21; i ++) {
+    for (var i = 0; i < 61; i ++) {
       if(i === 0){
         suffix = ' (сегодня)';
       }else if(i === 1){
